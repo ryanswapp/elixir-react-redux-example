@@ -1,0 +1,19 @@
+{
+  "name": "api_test",
+  "version": "0.0.0",
+  "authors": [
+    "Ryan Swapp <ryancswapp@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.3"
+  }
+}

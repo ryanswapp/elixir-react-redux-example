@@ -1,0 +1,5 @@
+<div class="jumbotron">
+  <h2>Welcome to my API bits</h2>
+</div>
+<div id="app"></div>
+

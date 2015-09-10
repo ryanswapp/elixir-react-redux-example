@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Actions from '../redux/action_creators.js';
 import store from '../redux/store.js';
 import { connect } from 'react-redux';
@@ -38,6 +39,9 @@ let PostsList = React.createClass({
 
     return (
       <div>
+        <div className="links">
+          <Link to="users">Users</Link> 
+        </div>
         <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">Title</label>

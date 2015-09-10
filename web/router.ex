@@ -13,16 +13,17 @@ defmodule ApiTest.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", ApiTest do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
-  end
-
   # Other scopes may use custom stacks.
   scope "/api", ApiTest do
     pipe_through :api
 
     resources "/posts", PostController
   end
+  
+  scope "/", ApiTest do
+    pipe_through :browser # Use the default browser stack
+
+    get "*path", PageController, :index
+  end
+
 end

@@ -24,7 +24,7 @@ channel.on("remove:post", payload => {
 });
 
 window.onload = () => {
-  Router.run(routes, (Root, state) => {
+  Router.run(routes, Router.HistoryLocation, (Root, state) => {
     React.render(
       <Provider store={store}>
        {() => <Root {...state} channel={channel}/>}

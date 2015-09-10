@@ -11,7 +11,7 @@ class UsersNew extends React.Component {
   render () {
     return (
       <div>
-        <div class="links">
+        <div className="links">
           <Link to="posts">Posts</Link> 
           <Link to="users">Users</Link>
         </div>

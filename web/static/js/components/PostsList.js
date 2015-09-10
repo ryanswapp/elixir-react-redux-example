@@ -3,10 +3,36 @@ import { Link } from 'react-router';
 import Actions from '../redux/action_creators.js';
 import store from '../redux/store.js';
 import { connect } from 'react-redux';
+import { Socket } from "../../../../deps/phoenix/web/static/js/phoenix"
 import axios from 'axios';
 
 let PostsList = React.createClass({
+  getInitialState() {
+    return {
+      channel: {}
+    }
+  },
   componentDidMount() {
+    let socket = new Socket("/socket");
+socket.connect();
+    let channel = socket.channel("posts:new", {})
+
+    this.setState({
+      channel: channel
+    });
+
+    channel.join().receive("ok", chan => {
+        console.log("joined");
+    });
+    channel.on("new:post", payload => {
+      console.log("There is a new post!");
+      store.dispatch(Actions.addPost(payload.post));
+    });
+    channel.on("remove:post", payload => {
+      console.log("Post has been removed");
+      store.dispatch(Actions.removePost(payload.post_id));
+    });
+    
     store.dispatch(Actions.fetchPosts());
   },
   handleSubmit(e) {
@@ -25,7 +51,7 @@ let PostsList = React.createClass({
     axios.post('/api/posts', {post: post})
       .then(function(response) {
         console.log("Successfully added post!");
-        self.props.channel.push("new:post", {post: response.data.data});
+        self.state.channel.push("new:post", {post: response.data.data});
         $('.title').val("");
         $('.body').val("");
       })
@@ -54,7 +80,7 @@ let PostsList = React.createClass({
         <input type="submit" className="btn btn-default" />                   
         </form>
         <ul className="list-group">
-        { this.props.posts.map(post => { return <Post post={post} key={post.id} channel={self.props.channel} /> }) }
+        { this.props.posts.map(post => { return <Post post={post} key={post.id} channel={self.state.channel} /> }) }
         </ul>
           
       </div>

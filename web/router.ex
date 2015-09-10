@@ -18,6 +18,11 @@ defmodule ApiTest.Router do
     pipe_through :api
 
     resources "/posts", PostController
+
+    #Users
+    post "/register", RegistrationController, :create
+
+    get "/users", UserController, :index
   end
   
   scope "/", ApiTest do

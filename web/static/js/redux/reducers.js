@@ -32,4 +32,24 @@ Reducers.posts = function posts(state=[], action) {
   }
 }
 
+Reducers.users = function users(state=[], action) {
+  switch (action.type) {
+    case 'FETCH_USERS':
+      var newState = action.users;
+      return newState;
+    case 'FAILED_FETCH_USERS':
+      return state;
+    case 'ADD_USER':
+      console.log("Added User!");
+
+      var newState = clone(state, true);
+
+      newState.push(action.user);
+
+      return newState;
+    default:
+      return state;
+  }
+}
+
 export default Reducers;

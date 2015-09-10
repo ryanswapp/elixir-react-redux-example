@@ -34,6 +34,7 @@ socket.connect();
     });
     
     store.dispatch(Actions.fetchPosts());
+    console.log(store.getState());
   },
   handleSubmit(e) {
     e.preventDefault();
@@ -112,5 +113,5 @@ let Post = React.createClass({
 });
 
 export default connect(state => ({
-  posts: state 
+  posts: state.posts 
 }))(PostsList);

@@ -3,6 +3,8 @@ import store from './store.js';
 
 const Actions = {};
 
+// POSTS
+
 Actions.fetchPosts = function fetchPosts() {
   return dispatch => {
     axios.get('/api/posts')
@@ -31,5 +33,34 @@ Actions.removePost = function removePost(postId) {
     post_id: postId
   }
 }
+
+// USERS
+
+Actions.fetchUsers = function fetchPosts() {
+  return dispatch => {
+    axios.get('/api/users')
+      .then(function (response) {
+        dispatch({
+          type: 'FETCH_USERS',
+          users: response.data.data
+        })
+      })
+      .catch(function(response) {
+        console.log(response);
+        dispatch({
+          type: 'FAILED_FETCH_USERS',
+          error: response
+        })
+      });
+  }
+};
+
+Actions.addUser = function addUser(user) {
+  return {
+    type: 'ADD_USER',
+    user: user
+  }
+};
+
 
 export default Actions;

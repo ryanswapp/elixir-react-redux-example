@@ -5,6 +5,8 @@ import store from '../redux/store.js';
 import { connect } from 'react-redux';
 import { Socket } from "../../../../deps/phoenix/web/static/js/phoenix"
 import axios from 'axios';
+import Auth from '../config/auth.js';
+import Nav from './Nav';
 
 let PostsList = React.createClass({
   getInitialState() {
@@ -22,7 +24,7 @@ socket.connect();
     });
 
     channel.join().receive("ok", chan => {
-        console.log("joined");
+        console.log("Joined posts:new");
     });
     channel.on("new:post", payload => {
       console.log("There is a new post!");
@@ -62,12 +64,9 @@ socket.connect();
   },
   render() {
     let self = this;
-
     return (
       <div>
-        <div className="links">
-          <Link to="users">Users</Link> 
-        </div>
+        <Nav currentUser={this.props.currentUser}/>
         <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
@@ -112,5 +111,6 @@ let Post = React.createClass({
 });
 
 export default connect(state => ({
-  posts: state 
+  posts: state.posts,
+  currentUser: state.currentUser 
 }))(PostsList);

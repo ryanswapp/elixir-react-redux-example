@@ -1,34 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Socket } from "../../../../../deps/phoenix/web/static/js/phoenix"
 import axios from 'axios';
 import Nav from '../Nav';
-import { connect } from 'react-redux';
+import store from '../../redux/store.js';
+import Actions from '../../redux/action_creators.js';
 
-
-class UsersNew extends React.Component {
+class UserLogin extends React.Component {
   constructor () {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {
-      loggedIn: false,
-      channel: {}
-    }
   }
-  componentDidMount() {
-    let socket = new Socket("/socket");
-    socket.connect();
 
-    let channel = socket.channel("users:new", {})
-
-    channel.join().receive("ok", chan => {
-      console.log("joined");
-    });
-
-    this.setState({
-      channel: channel
-    });
-  }
   handleSubmit(e) {
     e.preventDefault();
 
@@ -37,29 +19,36 @@ class UsersNew extends React.Component {
     let email = $('.email').val().trim();
     let password = $('.password').val().trim();
 
-    let user = {
+    let session = {
       email: email,
       password: password
     }
 
-    axios.post('/api/register', {user: user})
+
+    axios.post('/api/login', {session: session})
       .then(function(response) {
-        console.log("Successfully added user!");
-        self.state.channel.push("new:user", {user: response.data.data});
-        console.log(response);
-        $('.title').val("");
-        $('.body').val("");
+        if (response.status === 201) {
+          console.log("Successfully logged in!");
+          localStorage.auth_token = response.data.jwt;
+          store.dispatch(Actions.getCurrentUser());
+          $('.title').val("");
+          $('.body').val("");
+          self.context.router.transitionTo('/users');
+        } else {
+          console.log("Failed login...");
+        }
       })
       .catch(function(response) {
+        console.log("Failed login...");
         console.log(response);
       });
-    
   }
+
   render () {
     return (
       <div>
-        <Nav currentUser={this.props.currentUser}/>
-        <h1>New User</h1>
+        <Nav />
+        <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email</label>
@@ -74,8 +63,11 @@ class UsersNew extends React.Component {
       </div>
     )
   }
+
 }
 
-export default connect(state => ({
-  currentUser: state.currentUser
-}))(UsersNew);
+UserLogin.contextTypes = {
+  router: React.PropTypes.func.isRequired
+};
+
+export default UserLogin;

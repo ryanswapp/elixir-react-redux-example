@@ -2,7 +2,13 @@ defmodule ApiTest.UserSocket do
   use Phoenix.Socket
 
   ## Channels
+
+  ### Posts
   channel "posts:new", ApiTest.PostsChannel
+
+  ### Users
+  channel "users:new", ApiTest.UsersChannel
+  
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

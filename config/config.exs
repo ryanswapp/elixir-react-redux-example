@@ -19,6 +19,16 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :joken, config_module: Guardian.JWT
+
+config :guardian, Guardian,
+  issuer: "ApiTest",
+  ttl: { 3, :days },
+  verify_issuer: true,
+  secret_key: "vMmKtIzw98Sfn8TcIds9YJNQgOZKemKOnohjm5/OEyZgB22smQI+fqHKWa3BV6wQ",
+  serializer: ApiTest.GuardianSerializer
+
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

@@ -19,6 +19,8 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :joken, config_module: Guardian.JWT
+
 config :guardian, Guardian,
   issuer: "ApiTest",
   ttl: { 3, :days },

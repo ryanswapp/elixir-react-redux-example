@@ -1,5 +1,6 @@
 defmodule ApiTest.User do
   use ApiTest.Web, :model
+  @derive Access
 
   schema "users" do
     field :email, :string
@@ -24,5 +25,10 @@ defmodule ApiTest.User do
     |> unique_constraint(:email, on: ApiTest.Repo, downcase: true)
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 5)
+  end
+
+  def filter_password(user) do
+    user
+    |> HashDict.drop(:crypted_password)
   end
 end

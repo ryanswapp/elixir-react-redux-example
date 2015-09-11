@@ -38,7 +38,9 @@ Actions.removePost = function removePost(postId) {
 
 Actions.fetchUsers = function fetchPosts() {
   return dispatch => {
-    axios.get('/api/users')
+    axios.get('/api/users', {
+      headers: {'Authorization': localStorage.auth_token}
+    })
       .then(function (response) {
         dispatch({
           type: 'FETCH_USERS',
@@ -61,6 +63,43 @@ Actions.addUser = function addUser(user) {
     user: user
   }
 };
+
+Actions.logout = function logout() {
+  delete localStorage.auth_token;
+  
+  return {
+    type: 'LOG_OUT'
+  }
+};
+
+Actions.getCurrentUser = function getCurrentUser() {
+  return dispatch => {
+    axios.get('/api/current_user', {
+      headers: {'Authorization': localStorage.auth_token},
+      params: {
+        jwt: localStorage.auth_token
+      }
+    })
+      .then(function (response) {
+        if (response.status === 200) {
+          dispatch({
+            type: 'CURRENT_USER',
+            user: response.data.data
+          })
+        } else {
+          dispatch({
+            type: 'NOT_LOGGED_IN'
+          })
+        }
+      })
+      .catch(function(response) {
+        dispatch({
+            type: 'NOT_LOGGED_IN'
+          })
+      });
+
+  }
+}
 
 
 export default Actions;

@@ -11,6 +11,8 @@ defmodule ApiTest.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.LoadResource
   end
 
   # Other scopes may use custom stacks.
@@ -23,6 +25,9 @@ defmodule ApiTest.Router do
     post "/register", RegistrationController, :create
 
     get "/users", UserController, :index
+    get "/current_user", UserController, :current_user
+
+    post "/login", SessionController, :create
   end
   
   scope "/", ApiTest do

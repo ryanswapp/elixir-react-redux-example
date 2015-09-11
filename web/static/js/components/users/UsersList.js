@@ -4,6 +4,8 @@ import Actions from '../../redux/action_creators.js';
 import store from '../../redux/store.js';
 import { connect } from 'react-redux';
 import { Socket } from "../../../../../deps/phoenix/web/static/js/phoenix"
+import Auth from '../../config/auth.js';
+import Nav from '../Nav';
 
 
 class UsersList extends React.Component {
@@ -26,16 +28,14 @@ class UsersList extends React.Component {
 
     channel.join()
       .receive("ok", chan => {
-        console.log("joined");
+        console.log("Joined users:new");
       })
       .receive("error", chan => {
         console.log("Error joining");
-        console.log(chan);
       });
 
     channel.on("new:user", payload => {
       console.log("There is a new user!");
-      console.log(payload.user);
       store.dispatch(Actions.addUser(payload.user));
     });
 
@@ -43,12 +43,11 @@ class UsersList extends React.Component {
     console.log(store.getState());
   }
   render () {
+    console.log("Current User");
+    console.log(this.props.currentUser);
     return (
       <div>
-      <div className="links">
-        <Link to="new-user">New User</Link> 
-        <Link to="posts">Posts</Link>
-      </div>
+        <Nav currentUser={this.props.currentUser}/>
         <h1>Users List</h1>
         <div className="users-list">
           <ul className="list-group">
@@ -62,6 +61,7 @@ class UsersList extends React.Component {
     )
   }
 }
+
 
 export default connect(state => ({
   users: state.users 

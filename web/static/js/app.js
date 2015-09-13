@@ -1,4 +1,4 @@
-import "../css/app.css";
+require("../css/app.scss");
 import React from 'react';
 import Router from 'react-router';
 import { Provider } from 'react-redux';

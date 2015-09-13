@@ -1,10 +1,16 @@
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var webpack = require("webpack");
+var path = require('path');
 
 var env = process.env.MIX_ENV || 'dev';
 var prod = env === 'prod';
 
 var plugins = [new ExtractTextPlugin("app.css")];
+
+var stylePathResolves = (
+    'includePaths[]=' + path.resolve('./') + '&' +
+    'includePaths[]=' + path.resolve('./node_modules')
+  )
 
 if (prod) {
   plugins.push(new webpack.optimize.UglifyJsPlugin({minimize: true}))
@@ -25,7 +31,10 @@ module.exports = {
             },
             {
               test: /\.scss$/,
-              loader: 'style!css!sass'
+              loader: ExtractTextPlugin.extract(
+                'style',
+                'css' + '!sass?outputStyle=expanded&' + stylePathResolves
+              )
             }
 
         ]

@@ -35,5 +35,6 @@ defmodule ApiTest.Endpoint do
     key: "_api_test_key",
     signing_salt: "d4v2Po8+"
 
+  plug CORSPlug
   plug ApiTest.Router
 end

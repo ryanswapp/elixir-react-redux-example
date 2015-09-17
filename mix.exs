@@ -36,6 +36,7 @@ defmodule ApiTest.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 1.1"},
-     {:guardian, "~> 0.6.2"}]
+     {:guardian, "~> 0.6.2"},
+     {:cors_plug, "~> 0.1.3"}]
   end
 end

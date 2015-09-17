@@ -3,9 +3,9 @@ defmodule ApiTest.SessionController do
 
   def create(conn, %{"session" => session_params}) do
     case ApiTest.Session.authenticate(session_params, ApiTest.Repo) do
+      # If the user is authenticated, send back a new JWT
       {:ok, user} ->
         { :ok, jwt, full_claims } = Guardian.encode_and_sign(user, :token)
-        IO.inspect user
         conn
         |> put_status(:created)
         |> render(ApiTest.SessionView, "show.json", jwt: jwt)

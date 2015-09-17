@@ -27,8 +27,4 @@ defmodule ApiTest.User do
     |> validate_length(:password, min: 5)
   end
 
-  def filter_password(user) do
-    user
-    |> HashDict.drop(:crypted_password)
-  end
 end

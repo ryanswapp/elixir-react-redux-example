@@ -7,6 +7,7 @@ var prod = env === 'prod';
 
 var plugins = [new ExtractTextPlugin("app.css")];
 
+// This is necessary to get the sass @import's working
 var stylePathResolves = (
     'includePaths[]=' + path.resolve('./') + '&' +
     'includePaths[]=' + path.resolve('./node_modules')

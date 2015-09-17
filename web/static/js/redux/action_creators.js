@@ -6,6 +6,7 @@ const Actions = {};
 // POSTS
 
 Actions.fetchPosts = function fetchPosts() {
+  // This is special syntax for async actions
   return dispatch => {
     axios.get('/api/posts')
       .then(function (response) {
@@ -37,6 +38,7 @@ Actions.removePost = function removePost(postId) {
 // USERS
 
 Actions.fetchUsers = function fetchPosts() {
+  // More special async syntax
   return dispatch => {
     axios.get('/api/users', {
       headers: {'Authorization': localStorage.auth_token}
@@ -73,6 +75,7 @@ Actions.logout = function logout() {
 };
 
 Actions.getCurrentUser = function getCurrentUser() {
+  // Even MORE special asyn syntax
   return dispatch => {
     axios.get('/api/current_user', {
       headers: {'Authorization': localStorage.auth_token},

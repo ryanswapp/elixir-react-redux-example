@@ -4,6 +4,9 @@ defmodule ApiTest.UserController do
   alias ApiTest.User
   alias ApiTest.Repo
 
+  # Simple authentication provided by Guardian
+  # This code will check every incoming HTTP request for a JWT in the 
+  # 'Authorization' header
   plug Guardian.Plug.EnsureAuthenticated, on_failure: { ApiTest.SessionController, :unauthenticated_api }
 
   def index(conn, _params) do
@@ -15,9 +18,7 @@ defmodule ApiTest.UserController do
     case Guardian.decode_and_verify(jwt) do
       { :ok, claims } -> 
         id = claims["sub"] |> String.replace("User:", "") |> String.to_integer
-        result = Repo.get!(User, id)
-        user = put_in(result.crypted_password, "")
-        IO.inspect get_in(user, [:crypted_password])
+        user = Repo.get!(User, id)
         conn
         |> put_status(:ok)
         |> render("show.json", user: user)
